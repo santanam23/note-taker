@@ -46,6 +46,21 @@ app.delete("/api/notes/:id", function(req,res) {
     const idToDelete = parseInt(req.params.id);
     readFileAsync("./develop/db/db.json", "utf8").then(function(data) {
         const notes = [].concat(JSON.parse(data));
+        const newNoteData = []
+        for (let i = 0; 0<notes.length; i++) {
+            if (idToDelete !== notes[i].id) {
+                newNoteData.push(notes[i])
+            }
+        }
+        return newNoteData
+    }).then(function(notes) {
+        writeFileAsync("./develop/db/db.json", JSON.stringify(notes))
+        res.send('successfully saved!!! Way to go!')
     })
+});
+
+// Setting server to listen HTML Routes
+app.get("/notes", function(req,res) {
+    res.sendFile(path.join(__dirname, "./develop/piblic/notes.html"));
 });
 
