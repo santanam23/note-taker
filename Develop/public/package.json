@@ -1,0 +1,19 @@
+{
+  "name": "note-taker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santanam23/note-taker.git"
+  },
+  "author": "Miriam Santana",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/santanam23/note-taker/issues"
+  },
+  "homepage": "https://github.com/santanam23/note-taker#readme"
+}
