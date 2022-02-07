@@ -1,5 +1,23 @@
 {
   "dependencies": {
     "express": "^4.17.2"
-  }
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "note-taker",
+  "description": "This application was created to allow users to read and write notes. This application uses Express.js to connect the client-side server and back-end server and Node.js for it's file system. This application is deployed on Heroku. ## Table of Contents * [Installation](#installation)",
+  "version": "1.0.0",
+  "main": "server.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santanam23/note-taker.git"
+  },
+  "author": "Miriam Santana",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/santanam23/note-taker/issues"
+  },
+  "homepage": "https://github.com/santanam23/note-taker#readme"
 }

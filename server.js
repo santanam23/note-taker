@@ -53,7 +53,7 @@ app.get('/api/notes', (req, res) => {
 
 
 // API ROUTE POST REQUEST
-app.post("/api/notes", function(req,res) {
+app.post("/api/notes", (req,res) => {
     // set id based on what the next index of the array will be 
     req.body.id = notes.length.toString(); 
 
@@ -71,7 +71,7 @@ app.post("/api/notes", function(req,res) {
 
 
 // //API ROUTE DELETE REQUEST 
-app.delete("/api/notes/:id", function(req,res) {
+app.delete("/api/notes/:id", (req,res) => {
     const id = req.params.id;
     let note;
 
@@ -86,16 +86,16 @@ app.delete("/api/notes/:id", function(req,res) {
 });
 
 // Setting server to listen HTML Routes
-app.get("/notes", function(req,res) {
+app.get("/notes", (req,res) => {
     res.sendFile(path.join(__dirname, "./develop/public/notes.html"));
     });
-app.get("/", function(req,res) {
+app.get("/", (req,res) => {
     res.sendFile(path.join(__dirname, "./develop/public/index.html"));
 });
-app.get("*", function(req,res) {
+app.get("*", (req,res) => {
     res.sendFile(path.join(__dirname, "./develop/public/index.html"));
 });
-app.listen(PORT, function() {
+app.listen(PORT, () => {
     console.info("APP listening on PORT " + PORT);
-    });
+});
 
