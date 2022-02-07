@@ -1,66 +1,101 @@
 // Dependencies
-const express = require("express");
-const path = require("path");
-const fs = require("fs");
-const util = require("util");
-const req = require("express/lib/request");
-
-//How to handle asynchronous processes
-const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync =util.promisify(fs.writeFile);
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
 
 // Port set up
-const app = express();
 const PORT = process.env.PORT || 3001;
+
+const app = express();
 
 app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
+
 //Adding static middleware
 app.use(express.static("./develop/public"));
 
+// request data
+const { notes } = require('./develop/db/db.json');
+
+// function handling taking the data from req.body and adding it to our db.json file
+function createNewNote (body, notesArray) {
+    const note = body; 
+    notesArray.push(note); 
+
+    // path to write file 
+    fs.writeFileSync(
+        path.join(__dirname, './develop/db/db.json'),
+        JSON.stringify({ notes : notesArray }, null, 2)
+    );
+    // return finished code to post route for response
+    return note; 
+};
+
+// validating data
+function validateNote (note) {
+    if (!note.title || typeof note.title !== 'string') {
+        return false; 
+    }
+    if (!note.text || typeof note.text !== "string") {
+        return false;
+    }
+    return true;   
+};
+
+
+
 //API ROUTE GET REQUEST
-app.get("/api/notes", function(req, res) {
-    readFileAsync("./develop/db/db.json", "utf8").then(function(data) {
-        notes = [].concat(JSON.parse(data))
-        res.json(notes);
-    })
+app.get('/api/notes', (req, res) => {
+    res.json(notes); 
 });
+
 
 
 // API ROUTE POST REQUEST
 app.post("/api/notes", function(req,res) {
-    const note = req.body;
-    readFileAsync("./develop/db/db.json", "utf8").then(function(data) {
-        const notes = [].concat(JSON.parse(data));
-        note.id = notes.length + 1
-        notes.push(note);
-        return notes
-    }).then(function(notes) {
-        writeFileAsync("./develop/db/db.json" , JSON.stringify(notes))
-    })
+    // set id based on what the next index of the array will be 
+    req.body.id = notes.length.toString(); 
+
+    // if any data in req.body is incorrect, send error
+    if (!validateNote(req.body)) {
+        res.status(400).send('The note is not properly formatted.'); 
+    
+    } else {
+        // add note to json file and animals array in this function 
+        const note = createNewNote(req.body, notes); 
+
+        res.json(note);
+    }
 });
 
-//API ROUTE DELETE REQUEST 
+
+// //API ROUTE DELETE REQUEST 
 app.delete("/api/notes/:id", function(req,res) {
-    const idToDelete = parseInt(req.params.id);
-    readFileAsync("./develop/db/db.json", "utf8").then(function(data) {
-        const notes = [].concat(JSON.parse(data));
-        const newNoteData = []
-        for (let i = 0; 0<notes.length; i++) {
-            if (idToDelete !== notes[i].id) {
-                newNoteData.push(notes[i])
-            }
-        }
-        return newNoteData
-    }).then(function(notes) {
-        writeFileAsync("./develop/db/db.json", JSON.stringify(notes))
-        res.send('successfully saved!!! Way to go!')
+    const id = req.params.id;
+    let note;
+
+    notes.map((element, index) => {
+      if (element.id == id){
+        note = element
+        notes.splice(index, 1)
+        return res.json(note);
+      } 
+    
     })
 });
 
 // Setting server to listen HTML Routes
 app.get("/notes", function(req,res) {
-    res.sendFile(path.join(__dirname, "./develop/piblic/notes.html"));
+    res.sendFile(path.join(__dirname, "./develop/public/notes.html"));
+    });
+app.get("/", function(req,res) {
+    res.sendFile(path.join(__dirname, "./develop/public/index.html"));
 });
+app.get("*", function(req,res) {
+    res.sendFile(path.join(__dirname, "./develop/public/index.html"));
+});
+app.listen(PORT, function() {
+    console.info("APP listening on PORT " + PORT);
+    });
 

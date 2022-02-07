@@ -1,7 +1,14 @@
-[
+{
+  "notes": [
     {
-        "title":"Test Title",
-        "text":"Test text",
-        "id": 1
+      "title": "Grocery List",
+      "text": "1. Eggs\n2. Milk\n3. Yogurt\n",
+      "id": "0"
+    },
+    {
+      "title": "School Supplies",
+      "text": "1. Markers\n2. Highlighters\n3. Pens\n4. Paper\n5. Note Book\n",
+      "id": "1"
     }
-]
+  ]
+}
