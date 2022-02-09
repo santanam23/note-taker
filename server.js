@@ -13,10 +13,10 @@ app.use(express.json());
 
 
 //Adding static middleware
-app.use(express.static("./develop/public"));
+app.use(express.static("./public"));
 
 // request data
-const { notes } = require('./develop/db/db.json');
+const { notes } = require('./db/db.json');
 
 // function handling taking the data from req.body and adding it to our db.json file
 function createNewNote (body, notesArray) {
@@ -25,7 +25,7 @@ function createNewNote (body, notesArray) {
 
     // path to write file 
     fs.writeFileSync(
-        path.join(__dirname, './develop/db/db.json'),
+        path.join(__dirname, './db/db.json'),
         JSON.stringify({ notes : notesArray }, null, 2)
     );
     // return finished code to post route for response
@@ -87,13 +87,13 @@ app.delete("/api/notes/:id", (req,res) => {
 
 // Setting server to listen HTML Routes
 app.get("/notes", (req,res) => {
-    res.sendFile(path.join(__dirname, "./develop/public/notes.html"));
+    res.sendFile(path.join(__dirname, "./public/notes.html"));
     });
 app.get("/", (req,res) => {
-    res.sendFile(path.join(__dirname, "./develop/public/index.html"));
+    res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 app.get("*", (req,res) => {
-    res.sendFile(path.join(__dirname, "./develop/public/index.html"));
+    res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
